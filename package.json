@@ -1,6 +1,6 @@
 {
   "name": "cdnfly",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fastest and easiest cloud storage for hosting websites, backups and almost anything else.",
   "main": "main.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "mime-types": "^2.1.24",
     "zip-stream": "^2.0.1",
     "unzip-stream": "^0.3.0",
-    "stream-to-string": "^1.2.0"
+    "stream-to-string": "^1.2.0",
+    "string-to-stream": "^1.1.1"
   },
   "engines": {
     "node": "8.x"

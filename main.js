@@ -5,6 +5,7 @@ exports = module.exports = function(config) {
   var zip = require("zip-stream");
   var unzip = require("unzip-stream");
   var streamToString = require("stream-to-string");
+  var stringToStream = require("string-to-stream");
   var app = {
     status: require("./status.js")(),
     sanitize: sanitize,
@@ -118,8 +119,8 @@ exports = module.exports = function(config) {
           method: "PUT",
           "content-type": zipMode === true ? "application/zip, application/octet-stream" : contentType
         };
-        var build = function() {
-          return request.put({url: config.api + "/file", headers: headers}, function(error, response, body) {
+        var build = function(stream) {
+          return request.put({url: config.api + "/file", headers: headers, body: stream}, function(error, response, body) {
             if (typeof response !== "undefined" && typeof response.headers["x-amz-request-id"] !== "undefined") {
               resolve({status: app.status.success, file: localPath});
             } else {
@@ -127,16 +128,17 @@ exports = module.exports = function(config) {
             }
           })
         };
+        var stream = fs.createReadStream(localPath);
         if (zipMode === true) {
           var archive = new zip();
           archive.on("error", function(err) {
             throw err;
-          }).entry(fs.createReadStream(localPath), {name: localPath.split("/").pop()}, function(err, entry) {
+          }).entry(stream, {name: localPath.split("/").pop()}, function(err, entry) {
             if (err) throw err;
             archive.finish();
           }).pipe(build());
         } else {
-          build();
+          build(stream);
         }
       });
     },
@@ -151,8 +153,8 @@ exports = module.exports = function(config) {
           object: zipMode === true ? name + ".zip" : name,
           method: "PUT"
         };
-        var build = function() {
-          return request.put({url: config.api + "/file", headers: headers}, function(error, response, body) {
+        var build = function(stream) {
+          return request.put({url: config.api + "/file", headers: headers, body: stream}, function(error, response, body) {
             if (typeof response !== "undefined" && typeof response.headers["x-amz-request-id"] !== "undefined") {
               resolve({status: app.status.success, link: link});
             } else {
@@ -175,7 +177,7 @@ exports = module.exports = function(config) {
             archive.finish();
           }).pipe(build());
         } else {
-          build();
+          build(stream);
         }
       });
     },
@@ -191,8 +193,8 @@ exports = module.exports = function(config) {
           method: "PUT",
           "content-type": zipMode === true ? "application/zip, application/octet-stream" : contentType
         };
-        var build = function() {
-          return request.put({url: config.api + "/file", headers: headers}, function(error, response, body) {
+        var build = function(stream) {
+          return request.put({url: config.api + "/file", headers: headers, body: stream}, function(error, response, body) {
             if (typeof response !== "undefined" && typeof response.headers["x-amz-request-id"] !== "undefined") {
               resolve({status: app.status.success, message: "Done."});
             } else {
@@ -200,16 +202,17 @@ exports = module.exports = function(config) {
             }
           });
         };
+        var stream = stringToStream(contents);
         if (zipMode === true) {
           var archive = new zip();
           archive.on("error", function(err) {
             throw err;
-          }).entry(contents, {name: name.split("/").pop()}, function(err, entry) {
+          }).entry(stream, {name: name.split("/").pop()}, function(err, entry) {
             if (err) throw err;
             archive.finish();
           }).pipe(build());
         } else {
-          build();
+          build(stream);
         }
       });
     },
