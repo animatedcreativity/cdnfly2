@@ -10,7 +10,10 @@
     "node-sanitize-options": "^0.0.6",
     "node-promise-wrapper": "^0.0.2",
     "request": "^2.88.0",
-    "mime-types": "^2.1.24"
+    "mime-types": "^2.1.24",
+    "zip-stream": "^2.0.1",
+    "unzip-stream": "^0.3.0",
+    "stream-to-string": "^1.2.0"
   },
   "engines": {
     "node": "8.x"
