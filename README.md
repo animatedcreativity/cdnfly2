@@ -17,5 +17,7 @@ cdnfly.uploadLink(config, remotePath, link);
 cdnfly.readFile(config, remotePath);
 cdnfly.writeFile(config, remotePath, contents, contentType); // ex: application/json
 cdnfly.list(config, remotePath);
+cdnfly.json.put(config, remotePath, data);
+cdnfly.json.delete(config, remotePath, data);
 ```
 

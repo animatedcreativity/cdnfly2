@@ -227,14 +227,76 @@ exports = module.exports = function(config) {
           method: "LIST"
         };
         request.post({url: config.api + "/file/list", headers: headers}, function(error, response, body) {
-          var contentType = response.headers["content-type"];
-          if (contentType.split("application/json").length > 1) {
-            resolve(JSON.parse(body));
+          if (typeof response !== "undefined") {
+            var contentType = response.headers["content-type"];
+            if (contentType.split("application/json").length > 1) {
+              resolve(JSON.parse(body));
+            } else {
+              reject({status: app.status.listError, error: "List error."});
+            }
           } else {
             reject({status: app.status.listError, error: "List error."});
           }
         });
       });
+    },
+    json: {
+      put: function(config, name, data) {
+        return new Promise(async function(resolve, reject) {
+          config = app.sanitize.options(config, app.config);
+          var headers = {
+            "content-type": "application/json",
+            email: config.email,
+            apiKey: config.apiKey,
+            domain: config.domain,
+            object: name,
+            method: "PUT"
+          };
+          request.post({url: config.api + "/json", headers: headers, body: JSON.stringify(data)}, function(error, response, body) {
+            if (typeof response !== "undefined") {
+              var contentType = response.headers["content-type"];
+              if (contentType.split("application/json").length > 1) {
+                var json = JSON.parse(body);
+                if (json.status === 200) {
+                  resolve(json);
+                } else {
+                  reject(json);
+                }
+              } else {
+                reject({status: app.status.listError, error: "List error."});
+              }
+            }
+          });
+        });
+      },
+      delete: function(config, name, data) {
+        return new Promise(async function(resolve, reject) {
+          config = app.sanitize.options(config, app.config);
+          var headers = {
+            "content-type": "application/json",
+            email: config.email,
+            apiKey: config.apiKey,
+            domain: config.domain,
+            object: name,
+            method: "DELETE"
+          };
+          request.post({url: config.api + "/json", headers: headers, body: JSON.stringify(data)}, function(error, response, body) {
+            if (typeof response !== "undefined") {
+              var contentType = response.headers["content-type"];
+              if (contentType.split("application/json").length > 1) {
+                var json = JSON.parse(body);
+                if (json.status === 200) {
+                  resolve(json);
+                } else {
+                  reject(json);
+                }
+              } else {
+                reject({status: app.status.listError, error: "List error."});
+              }
+            }
+          });
+        });
+      }
     }
   }
   return app;

@@ -1,6 +1,6 @@
 {
   "name": "cdnfly",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Fastest and easiest cloud storage for hosting websites, backups and almost anything else.",
   "main": "main.js",
   "scripts": {
