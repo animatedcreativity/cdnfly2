@@ -263,8 +263,10 @@ exports = module.exports = function(config) {
                   reject(json);
                 }
               } else {
-                reject({status: app.status.listError, error: "List error."});
+                reject({status: app.status.jsonError, error: "JSON error."});
               }
+            } else {
+              reject({status: app.status.jsonError, error: "JSON error."});
             }
           });
         });
@@ -291,8 +293,10 @@ exports = module.exports = function(config) {
                   reject(json);
                 }
               } else {
-                reject({status: app.status.listError, error: "List error."});
+                reject({status: app.status.jsonError, error: "JSON error."});
               }
+            } else {
+              reject({status: app.status.jsonError, error: "JSON error."});
             }
           });
         });

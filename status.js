@@ -5,5 +5,6 @@ exports = module.exports = function() {
     uploadError: 2002,
     notFound: 404,
     listError: 2003,
+    jsonError: 2004,
   };
 };
